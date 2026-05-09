@@ -292,8 +292,9 @@
 
   <div class="content">
 
+    <!-- Avatar — replace the emoji with an <img src="yourphoto.png"> if you have one -->
     <div class="avatar">
-      <img src="pfp.jpg" alt="pfp">
+      <img src="" alt="pfp">
     </div>
 
     <p class="username">r1n</p>
@@ -329,80 +330,71 @@
 
   </div>
 
-  <audio id="audio-player" style="display:none;"></audio>
+  <div id="yt-player" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;"></div>
 
   <script>
-    var audio = document.getElementById('audio-player');
-    var audioReady = false;
-    var currentSongIndex = -1;
-    
-    var songs = [
-      { file: 'song.mp3', title: '4 Wheeler', artist: 'Yuno Miles' },
-      { file: 'song1.mp3', title: 'Fast Rap', artist: 'Yuno Miles' },
-      { file: 'song2.mp3', title: '4 Big Guys', artist: 'Digbar' }
-    ];
-    
-    function pickRandomSong() {
-      var newIndex;
-      do {
-        newIndex = Math.floor(Math.random() * songs.length);
-      } while (newIndex === currentSongIndex && songs.length > 1);
-      return newIndex;
-    }
-    
-    function loadSong(index) {
-      currentSongIndex = index;
-      audio.src = songs[index].file;
-      audio.load();
-      document.getElementById('npTitle').textContent = songs[index].title;
-      document.getElementById('npArtist').textContent = songs[index].artist;
-    }
-    
-    function playNextSong() {
-      var nextIndex = pickRandomSong();
-      loadSong(nextIndex);
-      audio.play().catch(function(err) {
-        console.error('Audio play error:', err);
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+
+    var player;
+    var playerReady = false;
+
+    window.onYouTubeIframeAPIReady = function() {
+      player = new YT.Player('yt-player', {
+        videoId: 'N5ab9IUSiOM',
+        playerVars: {
+          autoplay: 1,
+          loop: 1,
+          playlist: 'N5ab9IUSiOM',
+          controls: 0,
+          mute: 1,
+          disablekb: 1,
+          fs: 0,
+          playsinline: 1,
+          rel: 0,
+          modestbranding: 1
+        },
+        events: {
+          onReady: function(e) {
+            playerReady = true;
+            e.target.mute();
+            e.target.playVideo();
+            console.log('Player ready and playing (muted)');
+          },
+          onError: function(e) {
+            console.error('YouTube player error:', e.data);
+          }
+        }
       });
-    }
-    
-    loadSong(pickRandomSong());
-    audio.volume = 0.5;
-    
-    audio.addEventListener('canplaythrough', function() {
-      audioReady = true;
-      console.log('Audio ready');
-    });
-    
-    audio.addEventListener('ended', function() {
-      console.log('Song ended, playing next');
-      playNextSong();
-    });
+    };
 
     document.getElementById('enterOverlay').addEventListener('click', function() {
       var overlay = document.getElementById('enterOverlay');
       overlay.classList.add('hidden');
       
-      if (audioReady) {
-        audio.play().catch(function(err) {
-          console.error('Audio play error:', err);
-        });
-        console.log('Playing audio');
-      } else {
+      if (player && playerReady) {
+        player.unMute();
+        player.setVolume(50);
+        console.log('Unmuted and set volume to 50');
+      } else if (player) {
+        // Player exists but not ready yet, wait for it
         var checkReady = setInterval(function() {
-          if (audioReady) {
+          if (playerReady) {
             clearInterval(checkReady);
-            audio.play().catch(function(err) {
-              console.error('Audio play error:', err);
-            });
-            console.log('Playing audio after ready check');
+            player.unMute();
+            player.setVolume(50);
+            console.log('Unmuted after ready check');
           }
         }, 100);
       }
     });
+
+    // Set song info directly since oEmbed has CORS issues
+    document.getElementById('npTitle').textContent = 'Yuno Miles - The Song';
+    document.getElementById('npArtist').textContent = 'Yuno Miles';
   </script>
 
-  <style>:root { --bg: url("bg.jpg"); }</style>
+  <style>:root { --bg: url(""); }</style>
 </body>
 </html>
-
