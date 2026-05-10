@@ -170,7 +170,7 @@
       inset: -50%;
       width: 200%;
       height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.08), transparent);
+      background: linear-gradient(150deg, transparent, rgba(255,255,255,0.08), transparent);
       border-radius: 8px;
       animation: sweep 3s ease-in-out infinite;
       z-index: -1;
@@ -178,12 +178,12 @@
     }
 
     .links .link-btn:nth-child(1)::before { animation-delay: 0s; }
-    .links .link-btn:nth-child(2)::before { animation-delay: -1.5s; }
+    .links .link-btn:nth-child(2)::before { animation-delay: -0.5s; }
 
     @keyframes sweep {
-      0% { transform: translateX(-100%) translateY(-100%); }
-      50% { transform: translateX(100%) translateY(100%); }
-      100% { transform: translateX(-100%) translateY(-100%); }
+      0% { transform: translateX(-120%) translateY(20%); }
+      50% { transform: translateX(120%) translateY(-20%); }
+      100% { transform: translateX(-120%) translateY(20%); }
     }
 
     .link-btn:hover {
@@ -192,12 +192,6 @@
       color: #fff;
       box-shadow: 0 0 30px rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.4);
       transform: translateY(-2px) scale(1.02);
-    }
-
-    .link-btn:hover::before {
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-      animation-duration: 1.5s;
-      opacity: 0.8;
     }
 
     .link-btn svg {
