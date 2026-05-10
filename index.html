@@ -40,8 +40,7 @@
       inset: 0;
       background:
         radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.4) 100%),
-        linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%),
-        rgba(80, 0, 0, 0.3);
+        linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%);
       z-index: 1;
     }
 
@@ -133,11 +132,30 @@
     }
 
     .bio {
-      font-size: 12.5px;
-      color: rgba(255,255,255,0.38);
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
       text-align: center;
       line-height: 1.65;
-      max-width: 260px;
+      max-width: 280px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin: 4px 0;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stat svg {
+      opacity: 0.7;
     }
 
     .links {
@@ -369,6 +387,11 @@
     </div>
 
     <p class="username">rinzale</p>
+
+    <div class="stats">
+      <span class="stat"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> Romania</span>
+      <span class="stat"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg> Programmer</span>
+    </div>
 
     <p class="bio">Yuno Miles songs slap hard</p>
 
