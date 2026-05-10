@@ -125,6 +125,16 @@
       text-transform: uppercase;
     }
 
+    .username .cursor {
+      animation: blink 1s infinite;
+      color: #fff;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
     .bio {
       font-size: 12.5px;
       color: rgba(255,255,255,0.38);
@@ -335,7 +345,7 @@
       <img src="pfp.jpg" alt="pfp">
     </div>
 
-    <p class="username">rinzale</p>
+    <p class="username"><span id="typewriter"></span><span class="cursor">|</span></p>
 
     <p class="bio">Yuno Miles songs slap hard</p>
 
@@ -451,6 +461,35 @@
       console.log('Skipping song');
       playNextSong();
     });
+
+    // Typewriter effect for username
+    const text = 'rinzale';
+    const typewriterElement = document.getElementById('typewriter');
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typeWriter() {
+      if (!isDeleting) {
+        typewriterElement.textContent = text.substring(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === text.length) {
+          isDeleting = true;
+          setTimeout(typeWriter, 2000);
+          return;
+        }
+      } else {
+        typewriterElement.textContent = text.substring(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+          isDeleting = false;
+          setTimeout(typeWriter, 500);
+          return;
+        }
+      }
+      setTimeout(typeWriter, isDeleting ? 100 : 200);
+    }
+
+    typeWriter();
   </script>
 
   <style>:root { --bg: url("bg.jpg"); }</style>
