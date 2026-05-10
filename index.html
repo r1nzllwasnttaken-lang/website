@@ -186,8 +186,26 @@
       margin-bottom: 12px;
     }
 
+    .dp-avatar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dp-status-above {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #747f8d;
+    }
+
+    .dp-status-above.online { background: #3ba55d; }
+    .dp-status-above.idle { background: #faa81a; }
+    .dp-status-above.dnd { background: #ed4245; }
+    .dp-status-above.offline { background: #747f8d; }
+
     .dp-avatar {
-      position: relative;
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -200,22 +218,6 @@
       height: 100%;
       object-fit: cover;
     }
-
-    .dp-status {
-      position: absolute;
-      bottom: 2px;
-      right: 2px;
-      width: 12px;
-      height: 12px;
-      background: #3ba55d;
-      border-radius: 50%;
-      border: 2px solid #1a1a1a;
-    }
-
-    .dp-status.online { background: #3ba55d; }
-    .dp-status.idle { background: #faa81a; }
-    .dp-status.dnd { background: #ed4245; }
-    .dp-status.offline { background: #747f8d; }
 
     .dp-info {
       display: flex;
@@ -236,10 +238,15 @@
       color: #fff;
     }
 
+    .dp-badges {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
     .dp-badge {
-      width: 14px;
-      height: 14px;
-      color: #3ba55d;
+      width: 16px;
+      height: 16px;
     }
 
     .dp-activity {
@@ -459,25 +466,21 @@
         <div class="profile-avatar">
           <img src="pfp.jpg" alt="pfp">
         </div>
-        <div class="profile-info">
-          <div class="profile-name-row">
-            <span class="profile-name">RINZALE</span>
-          </div>
-          <div class="profile-id">474747</div>
-        </div>
       </div>
     </div>
 
     <!-- Discord Presence Card -->
     <div class="discord-presence" id="discordPresence">
-      <div class="dp-avatar">
-        <img id="dpAvatar" src="pfp.jpg" alt="discord avatar">
-        <div class="dp-status" id="dpStatus"></div>
+      <div class="dp-avatar-container">
+        <div class="dp-status-above" id="dpStatusAbove"></div>
+        <div class="dp-avatar">
+          <img id="dpAvatar" src="pfp.jpg" alt="discord avatar">
+        </div>
       </div>
       <div class="dp-info">
         <div class="dp-name">
           <span id="dpUsername">rinzale</span>
-          <svg class="dp-badge" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          <div class="dp-badges" id="dpBadges"></div>
         </div>
         <div class="dp-activity" id="dpActivity">Loading...</div>
       </div>
@@ -615,8 +618,17 @@
       document.getElementById('dpUsername').textContent = data.discord_user.username;
       
       // Update status indicator
-      const statusEl = document.getElementById('dpStatus');
-      statusEl.className = 'dp-status ' + data.discord_status;
+      const statusEl = document.getElementById('dpStatusAbove');
+      statusEl.className = 'dp-status-above ' + data.discord_status;
+      
+      // Update badges
+      const badgesEl = document.getElementById('dpBadges');
+      if (data.discord_user.public_flags || data.discord_user.flags) {
+        const flags = data.discord_user.public_flags || data.discord_user.flags;
+        badgesEl.innerHTML = getBadgesHTML(flags);
+      } else {
+        badgesEl.innerHTML = '';
+      }
       
       // Update activity
       const activityEl = document.getElementById('dpActivity');
@@ -638,6 +650,30 @@
       }
     }
     
+    // Badge icons (Discord public flags)
+    const BADGE_ICONS = {
+      1: { name: 'Staff', icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5', color: '#40e0d0' },
+      2: { name: 'Partner', icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z', color: '#f8c300' },
+      4: { name: 'HypeSquad', icon: 'M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.5L18 8v8l-6 3.75L6 16V8l6-3.5z', color: '#f47fff' },
+      8: { name: 'Bug Hunter', icon: 'M12 2c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z', color: '#f8c300' },
+      64: { name: 'HypeSquad Bravery', icon: 'M12 2L2 22h20L12 2zm0 4l7 12H5l7-12z', color: '#9c8ff7' },
+      128: { name: 'HypeSquad Brilliance', icon: 'M12 2L2 22h20L12 2zm0 4l7 12H5l7-12z', color: '#f47fff' },
+      256: { name: 'HypeSquad Balance', icon: 'M12 2L2 22h20L12 2zm0 4l7 12H5l7-12z', color: '#45ddbc' },
+      512: { name: 'Early Supporter', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z', color: '#0f7ec6' },
+      16384: { name: 'Verified Bot Dev', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z', color: '#3ba55d' },
+      4194304: { name: 'Active Developer', icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5', color: '#3ba55d' }
+    };
+    
+    function getBadgesHTML(flags) {
+      let html = '';
+      for (const [flag, badge] of Object.entries(BADGE_ICONS)) {
+        if (flags & parseInt(flag)) {
+          html += `<svg class="dp-badge" viewBox="0 0 24 24" fill="${badge.color}" title="${badge.name}"><path d="${badge.icon}"/></svg>`;
+        }
+      }
+      return html;
+    }
+
     // Fetch initially and then every 30 seconds
     fetchDiscordPresence();
     setInterval(fetchDiscordPresence, 30000);
