@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>r1n</title>
+  <title>rinzale</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -54,6 +54,20 @@
       width: 100%;
       max-width: 380px;
       padding: 2rem 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: startupFade 0.8s ease-out 0.3s forwards;
+    }
+
+    @keyframes startupFade {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .avatar {
@@ -102,11 +116,13 @@
     .avatar-inner { font-size: 38px; }
 
     .username {
-      font-size: 22px;
-      font-weight: 600;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
       color: #fff;
-      letter-spacing: -0.4px;
+      letter-spacing: 2px;
       text-shadow: 0 0 30px rgba(255,255,255,0.25);
+      text-transform: uppercase;
     }
 
     .bio {
@@ -319,7 +335,7 @@
       <img src="pfp.jpg" alt="pfp">
     </div>
 
-    <p class="username">𝚛𝚒𝚗𝚣</p>
+    <p class="username">rinzale</p>
 
     <p class="bio">Yuno Miles songs slap hard</p>
 
