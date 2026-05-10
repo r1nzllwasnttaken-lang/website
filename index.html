@@ -463,33 +463,41 @@
     });
 
     // Typewriter effect for username
-    const text = 'rinzale';
-    const typewriterElement = document.getElementById('typewriter');
-    let charIndex = 0;
-    let isDeleting = false;
-
-    function typeWriter() {
-      if (!isDeleting) {
-        typewriterElement.textContent = text.substring(0, charIndex + 1);
-        charIndex++;
-        if (charIndex === text.length) {
-          isDeleting = true;
-          setTimeout(typeWriter, 2000);
-          return;
-        }
-      } else {
-        typewriterElement.textContent = text.substring(0, charIndex - 1);
-        charIndex--;
-        if (charIndex === 0) {
-          isDeleting = false;
-          setTimeout(typeWriter, 500);
-          return;
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+      const text = 'rinzale';
+      const typewriterElement = document.getElementById('typewriter');
+      
+      if (!typewriterElement) {
+        console.error('Typewriter element not found');
+        return;
       }
-      setTimeout(typeWriter, isDeleting ? 100 : 200);
-    }
+      
+      let charIndex = 0;
+      let isDeleting = false;
 
-    typeWriter();
+      function typeWriter() {
+        if (!isDeleting) {
+          typewriterElement.textContent = text.substring(0, charIndex + 1);
+          charIndex++;
+          if (charIndex === text.length) {
+            isDeleting = true;
+            setTimeout(typeWriter, 2000);
+            return;
+          }
+        } else {
+          typewriterElement.textContent = text.substring(0, charIndex - 1);
+          charIndex--;
+          if (charIndex === 0) {
+            isDeleting = false;
+            setTimeout(typeWriter, 500);
+            return;
+          }
+        }
+        setTimeout(typeWriter, isDeleting ? 100 : 200);
+      }
+
+      typeWriter();
+    });
   </script>
 
   <style>:root { --bg: url("bg.jpg"); }</style>
