@@ -167,18 +167,23 @@
     .link-btn::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.08), transparent);
       border-radius: 8px;
       animation: sweep 3s ease-in-out infinite;
       z-index: -1;
       opacity: 0.5;
     }
 
+    .links .link-btn:nth-child(1)::before { animation-delay: 0s; }
+    .links .link-btn:nth-child(2)::before { animation-delay: -1.5s; }
+
     @keyframes sweep {
-      0% { transform: translateX(-100%); }
-      50% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
+      0% { transform: translateX(-100%) translateY(-100%); }
+      50% { transform: translateX(100%) translateY(100%); }
+      100% { transform: translateX(-100%) translateY(-100%); }
     }
 
     .link-btn:hover {
@@ -190,7 +195,7 @@
     }
 
     .link-btn:hover::before {
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
       animation-duration: 1.5s;
       opacity: 0.8;
     }
